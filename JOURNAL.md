@@ -33,9 +33,26 @@ To make it a bit clearer, I implemented a `sameCurrency` function and used this:
 
 I don't think that this adds much to the readability of the `addMoney` function, but the `sameCurrency` function can now be used somewhere else to check for same currency.
 
+
 ViewPatterns
 ------------
 
 I found a feature called ViewPatterns: http://hackage.haskell.org/trac/ghc/wiki/ViewPatterns (also saved as ViewPatterns.txt in the repository)
 
 After thinking a bit I believe now that ensuring equality of currency at compile time is not possible. ViewPatterns don't help because they enable applying an expression to a argument and matching a pattern against the result (instead of matching the pattern against the argument), but that would still mean that the function is not completely defined.
+
+
+Generalized Algebraic Datatypes (GADTs)
+---------------------------------------
+
+I found another feature which might be helpful in the `addMoney` problem:
+
+ - http://en.wikibooks.org/wiki/Haskell/GADT
+ - http://www.haskell.org/haskellwiki/Generalised_algebraic_datatype
+
+TypeClasses for Money
+---------------------
+
+Maybe typeclasses are good for specifying different types of money?
+
+ - http://www.haskell.org/tutorial/classes.html
