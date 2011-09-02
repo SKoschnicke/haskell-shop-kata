@@ -24,7 +24,10 @@ module PriceList (
   -- price definition is a product, a money instance and an matcher or something for the amount
   -- amount is a number and a unit
 
-  -- TODO: Non-exhaustive patterns to ensure equality of currencies?
-  addMoney :: Money -> Money -> Money
-  addMoney (Money a currency_a) (Money b currency_b)
-    | currency_a == currency_b  = Money (a+b) currency_a
+  sameCurrency :: Money -> Money -> Bool
+  sameCurrency (Money _ currency_a) (Money _ currency_b) = currency_a == currency_b
+
+  addMoney :: Money -> Money -> Maybe Money
+  addMoney money_a@(Money a currency_a) money_b@(Money b currency_b)
+    | sameCurrency money_a money_b  = Just (Money (a+b) currency_a)
+    | otherwise = Nothing
