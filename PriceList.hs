@@ -1,19 +1,25 @@
 module PriceList (
-  Euro, Product(..)
+  makeEuro, makeYen, Product(..)
 ) where
 
-  newtype Euro = MakeEuro Double
-  newtype US_Dollar = MakeUS_Dollar Double
-  newtype Yen = MakeYen Double
-  newtype Bitcoin = MakeBitcoin Double
+  -- currencies
+  data Euro
+  data US_Dollar
+  data Yen
+  data Bitcoin
 
-  class Money a where
-    (+) :: a -> a -> a
-    amount :: a -> Double
+  -- phantom type
+  newtype Money c = Money { amount :: Double } deriving (Show)
 
-  instance Money Euro where
-    amount (MakeEuro a) = a
-    (+) x y = MakeEuro (amount x Prelude.+ amount y)
+  -- this should be exported, not the type itself
+  makeEuro :: Double -> Money Euro
+  makeEuro a = (Money a)
+
+  makeYen :: Double -> Money Yen
+  makeYen a = (Money a)
+
+  (+) :: Money a -> Money a -> Money a
+  (+) x y = (Money (amount x Prelude.+ amount y))
 
   -- a product should not have a price or an amount
   data Product = Product {

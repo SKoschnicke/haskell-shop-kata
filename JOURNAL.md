@@ -61,4 +61,56 @@ I created a typeclass money, but ensuring that only same currencies are added wi
 
  - http://www.haskell.org/tutorial/moretypes.html
 
+The drawback is here that an instance has to be created for every currency that should be used. That makes it impossible to use user-defined arbitrary currencies, but I don't know that it's possible to have type-safe currencies at compile-time on the one hand and arbitrary run-time defined currencies on the other hand.
+
+PhantomTypes
+------------
+
+A better solution might be phantom types:
+
+ - http://www.haskell.org/haskellwiki/Phantom_type
+
+And finally, this works!
+
+    -- currencies
+    data Euro
+    data US_Dollar
+    data Yen
+    data Bitcoin
+
+    -- phantom type
+    newtype Money c = Money { amount :: Double } deriving (Show)
+
+    -- this should be exported, not the type itself
+    makeEuro :: Double -> Money Euro
+    makeEuro a = (Money a)
+
+    makeYen :: Double -> Money Yen
+    makeYen a = (Money a)
+
+    (+) :: Money a -> Money a -> Money a
+    (+) x y = (Money (amount x Prelude.+ amount y))
+
+See:
+
+    [1 of 1] Compiling PriceList        ( PriceList.hs, interpreted )
+    Ok, modules loaded: PriceList.
+
+    *PriceList> let a = makeEuro 24.0
+    *PriceList> a
+    Money {amount = 24.0}
+
+    *PriceList> let b = makeYen 10.0
+    *PriceList> b
+    Money {amount = 10.0}
+
+    *PriceList> (PriceList.+) a b
+
+    <interactive>:1:17:
+    Couldn't match expected type `Euro' with actual type `Yen'
+    Expected type: Money Euro
+      Actual type: Money Yen
+    In the second argument of `(PriceList.+)', namely `b'
+    In the expression: (PriceList.+) a b
+'
 
