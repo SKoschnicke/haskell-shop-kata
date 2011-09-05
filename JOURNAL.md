@@ -112,5 +112,21 @@ See:
       Actual type: Money Yen
     In the second argument of `(PriceList.+)', namely `b'
     In the expression: (PriceList.+) a b
-'
 
+Problem is that after compilation the currency is not visible anymore. So we could additionally add the currency to the record and ensure in the constructor, that it is always set correctly
+
+    -- phantom type
+    data Money currency = Money {
+      amount :: Double,
+      currency :: String
+    } deriving (Show)
+
+    -- this should be exported, not the type itself
+    makeEuro :: Double -> Money Euro
+    makeEuro a = (Money a "Euro")
+
+    makeYen :: Double -> Money Yen
+    makeYen a = (Money a "Yen")
+
+    (+) :: Money a -> Money a -> Money a
+    (+) x y = (Money (amount x Prelude.+ amount y) (currency x))
