@@ -56,3 +56,9 @@ TypeClasses for Money
 Maybe typeclasses are good for specifying different types of money?
 
  - http://www.haskell.org/tutorial/classes.html
+
+I created a typeclass money, but ensuring that only same currencies are added will only work when every currency is a separate type, so instead of using a record which holds amount and currency, I will create a type for each currency using newtype. This type only holds the amount, so it's just a double.
+
+ - http://www.haskell.org/tutorial/moretypes.html
+
+
