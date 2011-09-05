@@ -21,6 +21,9 @@ module PriceList (
   makeYen :: Double -> Money Yen
   makeYen a = (Money a "Yen")
 
+  instance Eq (Money a) where
+    (==) (Money amount_a currency_a) (Money amount_b currency_b) = currency_a == currency_b && amount_a == amount_b
+
   (+) :: Money a -> Money a -> Money a
   (+) x y = (Money (amount x Prelude.+ amount y) (currency x))
 
