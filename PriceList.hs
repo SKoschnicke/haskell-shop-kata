@@ -9,6 +9,8 @@ module PriceList (
   data Bitcoin
 
   -- phantom type
+  -- NOTE: the currency string is only added to have the currency at runtime,
+  -- correctness is ensured at compile-time even without the string
   data Money currency = Money {
     amount :: Double,
     currency :: String

@@ -130,3 +130,9 @@ Problem is that after compilation the currency is not visible anymore. So we cou
 
     (+) :: Money a -> Money a -> Money a
     (+) x y = (Money (amount x Prelude.+ amount y) (currency x))
+
+
+Products
+--------
+
+Next part is to develop a representation for products as shown on the bill which should be the goal of the kata..
